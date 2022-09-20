@@ -62,7 +62,7 @@ MIT「よくわからないけどチェックを外しておくとよいらし�
 meloviliju「必要のないものは外すといい」
 MIT「トークンを教えると人にその bot が支配されるので、教えてはいけない」
 MIT「bot を招待する。なるほど、bot を招待することができるのか。作っただけだと入らない」
-MIT「bot アカウントを作りたいということが確定しているための記事だとわかったので、別の記事を見ます」
+MIT「bot アカウントを作りたいということが確定している人のための記事だとわかったので、別の記事を見ます」
 $URL「https://discordpy.readthedocs.io/ja/latest/discord.html」
 SY「これが教育かぁ」
 meloviliju「胡乱そうなサイトだ」
@@ -76,7 +76,7 @@ MIT「bot を起動してやらないといけないらしい。ということ�
 MIT「bot を起動。Click to reveal token を押して、トークンを人に教えるなという話がまた出てきた」
 MIT「your token here をトークンに置き換えるのか」
 MIT「謎で、Python のコードとあるが、ネットに繋いでないコードがあっても動かないはず」
-MIT「そもそもこれは、Discord の bot にとって Python というのがどういう存在なのかがわかっていない」
+MIT「そもそもこれは、Discord の bot にとって Python というのがどういう存在なのかがわかっていないのが問題そう」
 meloviliju「レンタルサーバーに置いてるの？」
 SY「一度作ったことがあるけど、私はレンタルサーバーに置いた」
 meloviliju「bot がネット上にある Python を読みに行ってそれを実行する？」
@@ -126,6 +126,7 @@ MIT「Discord.py が何者かを調べるか」
 MIT「調べて、知らない語を明らかにしていく」
 $URL「https://qiita.com/sizumita/items/9d44ae7d1ce007391699」
 MIT「Qiita 記事を見ます」
+MIT「Discord.py の非公式のサーバーか」
 MIT「いま見なくてよさそうなので、見ません」
 meloviliju「ドットパイと読む慣習があります」
 MIT「Python が少しは書ける人が前提、なるほど？」
@@ -145,7 +146,7 @@ meloviliju「という話をいろんなところで見てきたが、一回も�
 MIT「コルーチン関数、深く考えなくてもいいのかなという気持ちになる」
 MIT「Discord API から送られてきたものを…」
 MIT「これの一つ前の記事になんか書いてあった気がするけど」
-MIT「Discord API という名詞が出てきたが、Discord.py と Discord API という二つの語を関係付ける」
+MIT「Discord API という名詞が出てきたが、Discord.py と Discord API という二つの語を関係付ける記述をさっき見た気がする」
 MIT「Python ラッパーというものらしい。なにもわからん」
 meloviliju「APIを叩くためのもの」
 MIT「APIを叩くという概念を理解していない」
@@ -258,7 +259,7 @@ meloviliju「Linux の環境が Windows で使えるようになる」
 hsjoihs「まあ、最初のうちは Windows 用のチュートリアルで困ることもないだろうし」
 meloviliju「私は 3.7 と 3.9 でコケた。とはいえ、しんどくなってから使えばいい」
 MIT「とりあえずインストーラをダウンロードしました」
-MIT「あまりにもこの分野の知識がないので雑な権威主義をかましていく」
+MIT「あまりにもこの分野の知識がないので、雑な権威主義をかましてここの記述に従っていく」
 meloviliju「>>> がある状態で exit() と打つと Python が終わるはず」
 $blockquote
 ```
