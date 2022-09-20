@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title>日本机戦連盟教育会ログ (2022年9月16日)</title>
+	<style>
+		img.icon {
+			border-radius: 50%;
+		}
+		div.one_person {
+			display: flex;
+			padding-bottom: 10px;
+		}
+		blockquote {
+			position: relative;
+			border-left: 3px solid #005242;
+			padding-left: 10px;
+			margin-inline-start: 10px;
+			white-space: pre-wrap;
+		}
+		a {
+			overflow-wrap: anywhere;
+		}
+		h3 {
+			margin-top: 15px;
+		}
+		.name a {
+			text-decoration: none;
+			color: inherit;
+		}
+		.name a:hover {
+			text-decoration: underline;
+		}
+		div.name_and_content {
+			padding-left: 10px;
+		}
+		pre {
+			white-space: pre-wrap;
+		}
+	</style>
+	<link rel="stylesheet" href="vs.min.css">
+	<script src="highlight.min.js"></script>
+	<script>hljs.highlightAll();</script>
+</head>
+<body style="background-color: #eeeeee">
+<h1>日本机戦連盟教育会ログ (2022年9月16日)</h1>
+<p>編纂者：<a href="https://twitter.com/hsjoihs" target="_blank" rel="noopener noreferrer">hsjoihs</a></p>
+<p><a href="https://hsjoihs.hatenablog.com/entry/*****">はてなブログへのバックリンク</a></p>
+<h2>概要</h2>
+<p><a href="https://sites.google.com/view/cet2kaik" target="_blank" rel="noopener noreferrer">日本机戦連盟</a>の <a href="https://discord.gg/jYdxPSF">Discord サーバー</a>で2022年9月16日に発生した会話が有用そうなので、会話を一般公開する。会話のテキスト起こしも、Discord に最初からテキストとして書かれたものも、区別せずに表示している。</p>
+<h2>文脈補足</h2>
+<p>この会話がなされた経緯としては、</p>
+<ul>
+	<li>創作者の集まりなのである意味当然なのだが、創作をするだけして、その documentation が全く足りていない現状がある。documentation 自体が行われている場合でも、その解説文書自体がとっ散らかっており、興味を持ってくれた人に「ここから全部読めます」と提示できるリンクがない</li>
+	<li>その編纂作業をきちんと行うには、労働力を定期的に供与するような仕組み作りが不可欠である</li>
+	<li>また、主要メンバーが今後半年間忙しくなってくるという現状がある中で、あらゆる面で属人化してしまっている現状を改善していく必要がある</li>
+</ul>
+<p>というのがある。このとっ散らかり具合を体感するには、<a href="https://github.com/AIL-MO-LETI-CEP/issues/issues/">issue 一覧</a>を見ていただくのが手っ取り早いであろう。</p>
+
+<p>ということで、今回は、属人化低下の一環として、Discord bot の製作のための下調べを通して、フロントエンド・バックエンド・API・責務の分離などの重要な概念について教育していくという会が行われた。</p>
+<h2>用語補足</h2>
+<p>日本机戦連盟の Discord サーバーでなされた会話であるので、一部の用語が説明なしに用いられている。ここではそれを解説する。</p>
+<ul>
+	<li>ボードゲーム「机戦」
+		<ul>
+			<li>架空世界で遊ばれている（という設定の）、長い伝統を持つ（という設定の）ゲーム</li>
+			<li><a href="https://yasusho1020.hatenablog.com/entry/2021/12/06/080852">Alibaba.com 経由で製造を中国企業に依頼</a>し、<a href="https://cet2kaik.booth.pm/items/3634755">販売</a>もしている</li>
+			<li>90 秒で解説した動画がこちら:<br><iframe width="560" height="315" src="https://www.youtube.com/embed/l1oRqKTQ0s8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></li>
+		</ul>
+	</li>
+	<li>BGEngine
+		<ul>
+			<li>ボードゲームのテストセット制作とオンラインテストプレイを支援するウェブサービス</li>
+			<li>URL は <a href="https://bgengine.net/">https://bgengine.net/</a></li>
+			<li>オンラインで机戦のテストプレイをするのに重宝していた</li>
+		</ul>
+	</li>
+	<li>cerke_online
+		<ul>
+			<li>hsjoihs がほぼ独力で組んだ、机戦のオンライン対戦をするための Web ページ</li>
+			<li>URL は <a href="http://jurliyuuri.github.io/cerke_online_alpha">http://jurliyuuri.github.io/cerke_online_alpha</a></li>
+			<li>最近は、基本的に全ての UI を異世界文字だけで表示できるようにするなどの改修を行っている<br>
+				<blockquote class="twitter-tweet"><p lang="ja" dir="ltr">5 年以上掛けて創作してきた架空伝統ゲーム「机戦（セッカイク）」、ついにそれのオンライン対戦用の Web アプリ上で基本的に全ての UI を異世界文字だけで表示できるようになった。Web アプリ版はコロナ前から組んでたはずだから、もう 3 年弱とかになるのか。いやぁここまで長かったなぁ <a href="https://t.co/ui7pekPocJ">pic.twitter.com/ui7pekPocJ</a></p>&mdash; hsjoihs (はすじょい) @ 年度末まで低浮上 (@hsjoihs) <a href="https://twitter.com/hsjoihs/status/1553751219486609408?ref_src=twsrc%5Etfw">July 31, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+			</li>
+		</ul>
+	</li>
+	<li>投げ棒
+		<ul>
+			<li>机戦に存在する乱数要素</li>
+			<li>詳しくは<a href="https://sites.google.com/view/cet2kaik/%E7%B5%B1%E4%B8%80%E8%A6%8F%E5%89%87/%E9%81%8A%E6%88%AF%E3%81%AE%E9%81%93%E5%85%B7?authuser=0#h.p_hS3zUqTfh6rv">公式サイト</a>を参照のこと</li>
+		</ul>
+	</li>
+	<li>『LE から LI を踏んで LU へ行け』
+		<ul>
+			<li>LE, LI, LU はマス目の名前。それぞれ、将棋でいう「８二」「８三」「８四」に対応。詳しくは<a href="https://sites.google.com/view/cet2kaik/%E7%B5%B1%E4%B8%80%E8%A6%8F%E5%89%87/%E6%A3%8B%E8%AD%9C%E8%A1%A8%E8%A8%98#h.sik5guriyy35">公式サイト</a>を参照のこと</li>
+			<li>「踏む」というのは、机戦最大の特徴。詳しくは上述の動画を参照のこと</li>
+			<li><a href="https://sites.google.com/view/cet2kaik/%E7%B5%B1%E4%B8%80%E8%A6%8F%E5%89%87/%E6%88%A6%E8%A1%93%E7%A0%94%E7%A9%B6#h.p_KAPUEdp98Tfw">日本机戦連盟 - 戦術研究</a>にもあるように、LE から LI を踏んで LU へ行くというのは、机戦において非常に典型的なオープニングであり、将棋における☗️２六歩と似た地位を占めている</li>
+		</ul>
+	</li>
+</ul>
+<h2>会話ログ本体</h2><div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">『定例会で issue を眺めるべきリポジトリの一覧』を立てて、それに従うという手</div>
+		<div class="content">つまり、『こういうタスクがあることを自覚しましょう』会</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">解決する会もやったほうがいい</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">かなり高頻度の『タスクを見る会』と、比較的低頻度の『実働会』に分離するというのがよいと思っている</div>
+		<div class="content">タスクを見る会はコストが安く、逃してもあんま困らないので、かなり機械的にやってもいいかなと</div>
+		<div class="content">逃してもあんま困らないことから、曜日がバラけるシステムでもいいので</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">3 日ごととか</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">そうしましょうか</div>
+		<div class="content">まあそれは bot を書けばいい</div>
+		<div class="content">今日の皆さんのご予定は</div>
+		<div class="content">じゃあ、実働会の初回として、『bot は作れる』ということの教育を、じゃあみっとんに振ります</div>
+		<div class="content">つまりどういうことかというと、やれと決めたので、それに基づいてなにをどう調べてどうするかを自分で考えていただく。極端に筋が悪いと私とかが判断した際に、みっとんに助言するが、それ以外はみっとんが行った判断に任せる</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">首が絞まりそうになるまで実装？</div>
+		<div class="content">なにをする bot であるかを考えないといけない</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">それについては、3 日ごとにメンションを飛ばす bot であると規定します</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">今の話の流れ的にそれはそうじゃん。了解</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">ああ、ということで、今開催されているのが遡及的に実働会になりました</div>
+		<div class="content">実況をして下さいね</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">パソコンに繋ぐので数分間お待ち下さい</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">このように、実働会の教育部門は、『ほっといてもこの人は身につけないであろうスキルだが、その実やってみるとそんなにつらくないもの』を押し付けるという方針がいいのかなと思っています</div>
+		<div class="content">なお、この方法を他人へと押し付けるのではなく、自分へ押し付けるというのもやり方だと思っています</div>
+		<div class="content">今日私はこれについて教育されます、と宣言して、実際にそれをやりつつ、他の人もただ実況を聞いてるだけでは虚無なので、調べて『これこういう情報見つけたけど』とかを言う、とか</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer"><img alt="SY" class="icon" src="icons/SY.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer">SY</a></span>
+		<div class="content">私はサークル納期の近い作業がある</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">ああ、みんなでもくもくじゃないのか</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">そういう会があってもいいが、それは教育ではなく労働力供与です</div>
+		<div class="content">もくもく会が適するのは、『手書き文書を分担して読んで、適宜質問をして』みたいな、既に皆がそれなりにできる、新規性がないが必要な作業、それこそがもくもく会に向いている</div>
+		<div class="content">一方で、comfort zone から一歩踏み出して、『ほっといてもこの人は身につけないであろうスキルだが、その実やってみるとそんなにつらくないもの』を強要するのが、教育会ですね</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer"><img alt="SY" class="icon" src="icons/SY.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer">SY</a></span>
+		<div class="content">燐字フォント製作を回せるぐらいには教育したい</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">だいぶやりたいが、一方で一人にやるには重い</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">画面配信がされているようだが、みっとんの声が聞こえていない</div>
+		<div class="content">画面配信がされてますが、私は見ないので、『何をやっているか』をかなり明確に言語化し続けて下さい</div>
+		<div class="content">私が見ると答えを言っちゃうので</div>
+		<div class="content">言語化を強要します。これは、みっとんは普通に暗黙の前提の共有がかなり下手なので、それを改善させる目的があります</div>
+		<div class="content">なので、私は見ないので、見ていないけれどもどういう状況なのか、がわかるぐらいの密度の実況をお願いします</div>
+		<div class="content">実況により手を動かす速度が落ちることは想定内です。そもそも速度を優先してたら私が組んでるので</div>
+		<div class="content">meloviliju・SY は配信を見て、言語化の足りていない場合にそれを指摘する役割で</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer"><img alt="SY" class="icon" src="icons/SY.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer">SY</a></span>
+		<div class="content">明日締め切りのタスクがあるのでみっとん画面をあんま見ません</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">NF、調査票が受理待ち。そろそろ連絡すべきか</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">KMC でも同じイベントに出してるので、あとで KMC がどうなってるかも調べてお知らせします</div>
+		<div class="content">みっとんから全く実況が聞こえてこないが</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">待たずに始めなさい</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">bot の戦略は 2 つ考えていて、Twitter のメンションか、Discord にするか</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">Discord</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">bot の作り方を調べます。Discord.py と書いてある</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">py はパイです</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">とりあえずそれを眺めます。まず、ライブラリと Discord の API を利用するには、などと書いている。ライブラリと Discord API が私にとって未定義語なので調べます</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer"><img alt="SY" class="icon" src="icons/SY.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer">SY</a></span>
+		<div class="content">用語がリンクになってたり？</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">しない</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">人に聞くとかは？</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">全然聞くことを禁じはしない</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">自分ひとりで完結するわけではないよね</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">まあ絶え間なく実況されてればなんでもいいかな</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">ライブラリというのは、他人によって公開された便利なもので、API とは『こうするとこうなる』というものです</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">よく考えると、私がやりたいことにライブラリと Discord API が必要かが分からないので、読む</div>
+		<div class="content"><a href="https://discordpy.readthedocs.io/ja/latest/discord.html" target="_blank" rel="noopener noreferrer">https://discordpy.readthedocs.io/ja/latest/discord.html</a></div>
+		<div class="content">bot のアカウント作成法が書かれている</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">見た Web ページのリンクは毎回貼って下さい、というルールを追加します</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer"><img alt="SY" class="icon" src="icons/SY.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer">SY</a></span>
+		<div class="content">API ってなんの略？</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">Application-Program Interface だけど、あんまいい名前ではない</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">bot ユーザーが作成されていて、他人に bot の追加を許可することができます</div>
+		<div class="content">よくわからないけどチェックを外しておくとよいらしい</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">必要のないものは外すといい</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">トークンを教えると人にその bot が支配されるので、教えてはいけない</div>
+		<div class="content">bot を招待する。なるほど、bot を招待することができるのか。作っただけだと入らない</div>
+		<div class="content">bot アカウントを作りたいということが確定しているための記事だとわかったので、別の記事を見ます</div>
+		<div class="content"><a href="https://discordpy.readthedocs.io/ja/latest/discord.html" target="_blank" rel="noopener noreferrer">https://discordpy.readthedocs.io/ja/latest/discord.html</a></div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer"><img alt="SY" class="icon" src="icons/SY.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer">SY</a></span>
+		<div class="content">これが教育かぁ</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">胡乱そうなサイトだ</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">胡乱そうなのかぁ</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">まあ読んで下さい</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">サーバーはあって、bot のアカウントにせよ自分のアカウントにせよ読めば良くて、導入部分を読むか</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">Python がインストールされているサーバーやパソコンが有ればいい</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">読みます</div>
+		<div class="content">bot の導入作業。bot を作成します。さっきと同様の話がされている。さっきと似ているなぁ</div>
+		<div class="content">bot を起動してやらないといけないらしい。ということで bot を起動するための手順が載ってる</div>
+		<div class="content">bot を起動。Click to reveal token を押して、トークンを人に教えるなという話がまた出てきた</div>
+		<div class="content">your token here をトークンに置き換えるのか</div>
+		<div class="content">謎で、Python のコードとあるが、ネットに繋いでないコードがあっても動かないはず</div>
+		<div class="content">そもそもこれは、Discord の bot にとって Python というのがどういう存在なのかがわかっていない</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">レンタルサーバーに置いてるの？</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer"><img alt="SY" class="icon" src="icons/SY.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer">SY</a></span>
+		<div class="content">一度作ったことがあるけど、私はレンタルサーバーに置いた</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">bot がネット上にある Python を読みに行ってそれを実行する？</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">ん？</div>
+		<div class="content">『ん？』に留めておきます</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">私も調べるかぁ</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">ちょっと一つ。この教育会そのものにコンテンツ性があるので、開催されるごとにこの議事録を一般公開するというのを考えています</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">いいんじゃないでしょうか</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer"><img alt="SY" class="icon" src="icons/SY.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer">SY</a></span>
+		<div class="content">知見が世の中に提供されるのは良いこと</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">読みに来る人少ないしな</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">実は、こういう手動で取った議事録をいい感じにレンダリングして表示するツールを組んだので</div>
+		<div class="content">なにかというと、C コンパイラ班の過去ログ公開</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">次はなにをしようか。</div>
+		<div class="content">まず、Discord の bot とはなにであるかを調べるか</div>
+		<div class="content"><a href="https://seleck.cc/discord-bot" target="_blank" rel="noopener noreferrer">https://seleck.cc/discord-bot</a></div>
+		<div class="content">これ違う気がするなぁ。一応読むか</div>
+		<div class="content">一応、これの主題『bot は作れる』だから、似た機能のを探すのは最後にしておくか</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">そう、『目的を満たす bot を探して、入れる』は、問題を解決することができているので、それをやって終了、でも良いです</div>
+		<div class="content">結局目的を果たせることが一番求められていることであり、かつ、『自分が責任持って管理しなきゃいけない部分を減らす』というのは、普通に重要なテクです</div>
+		<div class="content">なので、適切な bot を見つけて、今回の目的を果たして、終了、でも全然良い</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer"><img alt="SY" class="icon" src="icons/SY.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer">SY</a></span>
+		<div class="content">ただ、reminder bot いいの無いんだよなぁ。需要があったのでサークルで作ったんだけど、課金が必要とか、たまにバグるとか、微妙だった</div>
+		<div class="content">細かい設定を要求したければ作るしか無いのかなぁ</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">どこが痒いか把握するのは結局自分でないとできないのでね</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">まさにそのとおりで、『なぜ常に汎用品を転用せず、たまにコードを書くのか？』という問いの答えは、『ニーズにぴったり合うものを探すより、ニーズに合わせるように自分で書いたほうが楽だ』という状況が往々にしてあるから</div>
+		<div class="content">例えば cerke_online とかを考えていただくと、最初は BGEngine で『オンラインでボードを共有して、対戦したい』という需要を満たしていた</div>
+		<div class="content">しかしながら、『初期配置は常に決まっているのに、それを毎回戻すのが面倒』『動きがどんどん確定していくにつれ、自由に動かせる、という利点がだんだん欠点になってきた』などの経緯から、自作へと移っていくことになった</div>
+		<div class="content">自作は普通にコストが掛かって（主に私が）（私だけが）大変だったが、一方で、これを書いたことにより、</div>
+		<div class="content">まず机戦を知らない人にとってもギリ遊べる代物が完成したことによる布教ハードルの低下</div>
+		<div class="content">単純に、机戦をやりたいのであってそれ以外を求めていないときの利便性の上昇</div>
+		<div class="content">机戦ならではの諸機能、役の判定や点数の計算や棋譜取りなど、がすべて自動化できること</div>
+		<div class="content">などの、まさに『どこが痒いか把握』しているからこそ提供できる価値が提供できた</div>
+		<div class="content">ということで、『既製品を使う』は完全に正解だけれど、それはそれで『いろんな既製品を探し、その中で目的にあうものであるかを別の Discord サーバーを立てて実験し、気に入ったものを採用する』という手間が掛かる。で、どちらの手間を取るべきかというトレードオフを意識して、意思決定をする、または、両方やる</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">とりあえず、あの記事を読みます</div>
+		<div class="content">音楽を流す bot とかあったね</div>
+		<div class="content">bot を追加すると slash コマンドが使える</div>
+		<div class="content">SY のさっきの発言からして、既製品は向かない気がするけど眺めるか。特に有益な情報なし</div>
+		<div class="content">Discord bot 仕組み、とかで調べればいいのかな。しかし仕組みを知りたいのか？</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer"><img alt="SY" class="icon" src="icons/SY.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer">SY</a></span>
+		<div class="content">素朴な方法で調べて何通りか見ればいいのでは</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">といいますと？</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer"><img alt="SY" class="icon" src="icons/SY.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer">SY</a></span>
+		<div class="content">文献学者の発想として、とりあえず多くの文献を乱読したほうが得られるものが多い</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content"></div>
+		<div class="content"><a href="https://dev.classmethod.jp/articles/discord-bot-by-discordpy/" target="_blank" rel="noopener noreferrer">https://dev.classmethod.jp/articles/discord-bot-by-discordpy/</a></div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer"><img alt="SY" class="icon" src="icons/SY.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer">SY</a></span>
+		<div class="content">実践系の記事はよさそう</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">bot 確認用の鯖作成、たしかに必要だ。読んでからやるか</div>
+		<div class="content">bot の作成、さっきもそんな話あったな</div>
+		<div class="content">Discord.py が何者かを調べるか</div>
+		<div class="content">調べて、知らない語を明らかにしていく</div>
+		<div class="content"><a href="https://qiita.com/sizumita/items/9d44ae7d1ce007391699" target="_blank" rel="noopener noreferrer">https://qiita.com/sizumita/items/9d44ae7d1ce007391699</a></div>
+		<div class="content">Qiita 記事を見ます</div>
+		<div class="content">いま見なくてよさそうなので、見ません</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">ドットパイと読む慣習があります</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">Python が少しは書ける人が前提、なるほど？</div>
+		<div class="content">Python を入れる、なるほど。あなたの bot のトークン、と書いてあるので、bot を作っていることが前提っぽい。さっき読んだ記事が役立ちそう</div>
+		<div class="content">これはローカルで？</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">ローカルの CUI でやれということ</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">.py とは Python で書かれたファイルにつくもの？</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">しかし Discord.py はどうだろう。Discord.py という名前のライブラリがあって、それを呼び出すファイルを discord.py と命名する慣習がある、ということかと</div>
+		<div class="content">.__version__ は『〜の __version__』という意味です</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">JS で似たのを見たなぁ</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer"><img alt="SY" class="icon" src="icons/SY.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer">SY</a></span>
+		<div class="content">私が組んだときには JavaScript でした。JavaScript もあるはず。でも所感として Python の方が情報が多い</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">コルーチン… Python わかんないんだよな</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">細かいことは詰まってからやったほうがいい</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">コルーチン関数とは…</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">非同期処理というのがあって</div>
+		<div class="content">という話をいろんなところで見てきたが、一回も使ったことがない</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">コルーチン関数、深く考えなくてもいいのかなという気持ちになる</div>
+		<div class="content">Discord API から送られてきたものを…</div>
+		<div class="content">これの一つ前の記事になんか書いてあった気がするけど</div>
+		<div class="content">Discord API という名詞が出てきたが、Discord.py と Discord API という二つの語を関係付ける</div>
+		<div class="content">Python ラッパーというものらしい。なにもわからん</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">APIを叩くためのもの</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">APIを叩くという概念を理解していない</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">叩きやすくしてくれる…ドアノッカーです</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer"><img alt="SY" class="icon" src="icons/SY.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer">SY</a></span>
+		<div class="content">ある部屋とある部屋…アプリケーション同士をつなぐ鍵というか、えーと</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">規則としてのコード</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">ちょっとこれは私が介入しようかなぁ</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">そのほうがいいと思う</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">API とはなにか、ですが、先程言ったとおり Application-Program Interface の略なんですが、このうち一番最後の Interface だけが重要で、残り二つは理解の妨げになります</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">API とはインターフェース、なにもわからん</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">インターフェースとはなにかというと、よく『界面』に喩えて訳されます</div>
+		<div class="content">要は、二つの質的に異なるものがあって、それらが接触する領域・方法、というイメージ</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">Web サービスに外部から参入するための規則を定めている</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">具体例出しますか。cerke_online</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">一番身近だ</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">cerke_online がどういう仕組みになっているかというと、cerke_online は二つのソフトウェアからなっていて、一つを『フロントエンド』、もう一つを『バックエンド』と呼びます</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">ツイートで見かけるなぁ</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">フロントエンドとは、ブラウザで動く『盤面を表示し、入力を受け付ける』やつです</div>
+		<div class="content">cerke_online のページを開くと、フロントエンドが動いて、机戦を遊ぶことができます</div>
+		<div class="content">さて、フロントエンドは、ユーザーの入力をバックエンドに送ります</div>
+		<div class="content">そして、それを受けてバックエンドから情報が返ってきます</div>
+		<div class="content">なぜこのような仕組みを取っているのか？</div>
+		<div class="content">どう思います？</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">とりあえず、多分よほど新しいことをしない限りはフロントエンドをいじるだけでデザインを変えられるというのがありそう</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">それは正解の一つです。ソフトウェアというものは、うまく分割することで見通しがよくなります</div>
+		<div class="content">分割するということは、『片方がもう片方の内部状態にアクセスする手段』の個数が比較的少数のチャネルへと減少するということです</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">そうなんだ</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">自明ではない割にあんま説明の助けにならない気がしてきたな</div>
+		<div class="content">よく喩えられるのは、『なぜあらゆることをやる一つの企業があるのではなく、複数の企業が互いに話し合って仕事が進むのか』</div>
+		<div class="content">ここを詳しく述べてもあんま関係ないのでちょっとスルーしますが</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">結局分割による見通しの良さ</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">フロントエンドとバックエンドに分ける理由なんですが、一つ必然的な理由があります</div>
+		<div class="content">それはなにかというと、『プレイヤー 1 が支配するコンピュータと、プレイヤー 2 が支配するコンピュータが、異なったコンピュータにある』からです</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">考えてなかった</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">分けないとどのような致命的なことが？</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">例えば、机戦には投げ棒があります。この投げ棒の値は、両プレイヤーが同じものを見る必要があります</div>
+		<div class="content">よって、バックエンドが『プレイヤー A とプレイヤー B の試合で投げられた投げ棒の値』を管理して、それをプレイヤー A とプレイヤー B に伝えるということが必要になる</div>
+		<div class="content">さらに言うなら、フロントエンドは『プレイヤーが支配するコンピュータ』の上で動く</div>
+		<div class="content">ということは、プレイヤーはフロントエンドを不正に改造することができる</div>
+		<div class="content">リモートで机戦をやるときには、素朴にやると『投げ棒の値を相手に伝える』という作業が個人の良心に依存する</div>
+		<div class="content">中間者がいない場合、投げ棒の確率をいじって伝えるイカサマが可能になる</div>
+		<div class="content">投げる様を配信させることで解決できるように一見思えるが、予め録画してある偽の動画を流すという手段がある</div>
+		<div class="content">これも含め、情報系の話をやるときには、最大の悪意を持っても壊せないように作る必要がある</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">ゼロトラストの例？</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">これをゼロトラストとは呼ばない。ゼロトラストは、普通『プレイヤーもバックエンドを信用しなくていい』の意味で使う</div>
+		<div class="content">さて、ということで、フロントエンドとバックエンドに分割することによって、バックエンドが状態を中央集権的に管理して、プレイヤー側のコンピュータで動くフロントエンドがイカサマをできないようにする、という役割があることが分かった</div>
+		<div class="content">cerke_online の場合は、『バックエンドがただ一人存在して、そこに向けて情報が送られるので、それを精査して結論を下す』という、中央集権的主体としてバックエンドがある</div>
+		<div class="content">Discord の場合も似たようなことになっていて、Discord 社が管理するコンピュータが、皆さんのパソコンに入ってるアプリから飛んでくる情報を精査して、結論を下して、Discord 社が管理するコンピュータの状態が書き換わって、それを皆さんのパソコンに入ってるアプリが読むことによって、会話が成立する</div>
+		<div class="content">Discord API というのはなにかというと、この『皆さんのパソコンに入ってるアプリ』（フロントエンド）が『Discord 社が管理するコンピュータ』（バックエンド）と会話するときのコミュニケーション手段であって、バックエンドは、同じ言葉を喋ってくれれば如何なるソフトがそれを話したとしても、それを平等に精査して結論を下す</div>
+		<div class="content">なので、Discord アプリが話す言葉と同じ言葉を話せば良い</div>
+		<div class="content">Discord 社は、『メッセージを送るには、こういうことをして下さい』という仕様書を一部公開している</div>
+		<div class="content">それに従ってさえいれば、今私が文字を打ち込んでEnterを押してメッセージを送っているのと同様に、そうでない手段でもメッセージを書き込める</div>
+		<div class="content">なので、APIを叩くというのは、その仕様書に従って、何らかのインタラクションをして、Discord 社の管理してるコンピュータの内部状態を適正に書き換える、という意味</div>
+		<div class="content">bot というのは、人間がアプリをいじるというのではない手段により、人間がアプリをいじるのと同等のインタラクションを Discord 社に飛ばすようなプログラム</div>
+		<div class="content">Discord.py というのは、その API を叩くための適正なインタラクションを、楽に行えるようにする手段</div>
+		<div class="content">さっきラッパーという言葉が出てきた</div>
+		<div class="content">これはどういうことかというと、例えば cerke_online は、実はプレイヤーが直に API を叩くことによってもバックエンドの状態を変化させることができるが、それはあまりに面倒なので、GUI を操作することで手を記述して、それをバックエンドへと送信することができる</div>
+		<div class="content">このことを、『GUI ラッパー』と呼ぶことがある</div>
+		<div class="content">GUI によって、『API を叩く』という七面倒臭い作業を、やりやすくしてくれる</div>
+		<div class="content">Python ラッパーというのは、Python のコードを書くことで『API を叩く』という七面倒臭い作業をやってくれる存在</div>
+		<div class="content">cerke_online の API を叩くとは実際どういうことか</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">Discord 社は『この言語でこうやればいい』と公開しているが、それは面倒なので、有名言語でそれを代行するツールがラッパーという名前で広まっている？</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">実際の面倒を見せたほうがいいので、実例を持ってきます</div>
+		<pre><code class="language-js">fetch(&#x60;https://little-water-8645.fly.dev/decision/infafterstep/&#x60;, {
+    method: &quot;POST&quot;,
+    body: &#x27;{&quot;type&quot;:&quot;InfAfterStep&quot;,&quot;step&quot;:[&quot;I&quot;,&quot;L&quot;],&quot;plannedDirection&quot;:[&quot;U&quot;,&quot;L&quot;],&quot;src&quot;:[&quot;E&quot;,&quot;L&quot;]}&#x27;
+    headers: {
+      &quot;Content-Type&quot;: &quot;application/json&quot;,
+      Authorization: &#x60;Bearer ${sessionStorage.session_token}&#x60;,
+    },
+  })
+</code></pre>
+		<div class="content">これを実行することで、『LE から LI を踏んで LU へ行け』という言葉がバックエンドに伝わります</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">毎回これ書くのヤダなぁ</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">ここに書いてある sessionStorage.session_token というのが、要はトークンで、まあ要は『この合言葉を知っている者が送ってますよ』の証であり、これが盗まれると全部乗っ取られる。このプレイヤーになりすまして任意の（バックエンドが受理することのできる）操作をできる</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">cerke_online だと対戦を横取りされるだけで済むが、一般には困るなぁ</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">ラッパーは、面倒を避けるだけではなくて、API の仕様が変わったときにそれを『吸収する』、気付かれないようにする、という役割もあります</div>
+		<div class="content">具体的には、先月末にバックエンドを heroku から fly.io に変えました</div>
+		<div class="content">これはどういう意味かと言うと、中央集権的な処理をやるというタスクを私は他人のコンピュータへと委託してたけれど、その委託先を変えたという意味</div>
+		<div class="content">しかしながら、誰も API を直に叩いておらず、すべてのプレイヤーが GUI ラッパーを経由して API を叩いていたので、この差異は全く気づかれていない</div>
+		<div class="content">逆にいうと、API が同じであれば、ソフトウェアの中身がごっそりすり替わってても迷惑をかけない</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">バックエンドが変わったら API も変わりませんか</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">逆で、バックエンドの内部構造を返る際に、API だけはその変更の前と後で同じであるように努力する</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">なるほど？</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">例え話をしまーす</div>
+		<div class="content">人をどれだけ首にして、どれだけ机やらパソコンやらの配置を変えたとしても、依頼Aに対して返答Bを返すという機能さえ一致していれば、内部構造が変わった頃はバレない</div>
+		<div class="content">数学屋にだけ伝わるような言い方をすると、『写像はどのような入力をどのような出力によって送るか（あと domain と codomain）によってのみ特徴づけられる』</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">heroku とか fly.io は写像の名前ではないということか</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">はい、委託場所の名前、代行業者の名前。代行業者を変えたら、当然別の住所に住んでいるので、別のアドレスへと API を投げなきゃいけなくなる</div>
+		<div class="content">なので、委託先を変えるという今回の決断は、『API の破壊的変更』です。今までやっていたのと全く同じ方法では期待した動作が返ってこなくなるので</div>
+		<div class="content">しかしながら、この破壊的変更を最小限に留める（つまり、URL だけが異なる）ようにできたので、フロントエンドの変更は一行で済んだ</div>
+		<div class="content">これが、住所すら変わっていなかったら、フロントエンドはゼロ行の変更で済んだが、今回『heroku 無料プラン廃止』というどうしようもない地上げが来たので、オフィスを移転した、ということ</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">『フロントエンドとバックエンドの合成写像』の変更がなければ、ユーザーは変化に気づかない</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">そのとおりで、そのことをこっちの業界では『ラッパーが、API に起きた変化を吸収する』と表現します。数学屋さんには時間軸がないけど、こっちには常に変更前と後があるので</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">「分割するということは、『片方がもう片方の内部状態にアクセスする手段』の個数が比較的少数のチャネルへと減少するということです」という話、「あるパラメータ（？）を直接弄る権限をもつものが減る」の義？</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">その表現により十分よく近似される</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">実況に戻るかぁ</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">bot に戻ろう</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">Discord.py を使うと、Python を書いて Discord API を操作できることになる</div>
+		<div class="content">私はどの言語も知らないので、一番情報の多い Python をダウンロードしようかな</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">まあ Python でいいんじゃないですか</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">Python ってなに入れればいいんだ？</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">まあそこら辺を追っていきましょう</div>
+		<div class="content"><a href="https://www.python.jp/install/windows/install.html" target="_blank" rel="noopener noreferrer">https://www.python.jp/install/windows/install.html</a></div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">WSL で入れるのが一番ラクではあるけど</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">それはなんですか？</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">Linux の環境が Windows で使えるようになる</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">まあ、最初のうちは Windows 用のチュートリアルで困ることもないだろうし</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">私は 3.7 と 3.9 でコケた。とはいえ、しんどくなってから使えばいい</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">とりあえずインストーラをダウンロードしました</div>
+		<div class="content">あまりにもこの分野の知識がないので雑な権威主義をかましていく</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">&gt;&gt;&gt; がある状態で exit() と打つと Python が終わるはず</div>
+		<blockquote>Use exit() or Ctrl-Z plus Return to exit
+</blockquote>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content"></div>
+		<div class="content"><a href="https://www.python.jp/install/windows/py_launcher.html" target="_blank" rel="noopener noreferrer">https://www.python.jp/install/windows/py_launcher.html</a></div>
+		<div class="content">2+2 を打ったら 4 が出ました</div>
+		<div class="content">quit() で終了できるらしい</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">quit() でも exit() でもいいのか</div>
+		<div class="content">コマンドラインというのは、コマンドプロンプトの入力行</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content"></div>
+		<div class="content"><a href="https://www.python.jp/install/windows/pip.html" target="_blank" rel="noopener noreferrer">https://www.python.jp/install/windows/pip.html</a></div>
+		<div class="content">もしかして、この pip で Discord.py も</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">そうです</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content"></div>
+		<div class="content"><a href="https://stackoverflow.com/questions/50686388/how-to-install-discord-py-rewrite" target="_blank" rel="noopener noreferrer">https://stackoverflow.com/questions/50686388/how-to-install-discord-py-rewrite</a></div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">4 年前の記事です。Discord はかなり変化が激しいので、あまり役立たない可能性があります</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">Math StackExchange しか見てないので質問時期を確認するという習慣がなかった</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer"><img alt="SY" class="icon" src="icons/SY.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer">SY</a></span>
+		<div class="content">Discord 変化激しくて困りますよね。私が組んだときも発生した</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content"></div>
+		<div class="content"><a href="https://stackoverflow.com/questions/72278384/what-is-the-reason-for-getting-a-pip-error?noredirect=1&amp;lq=1" target="_blank" rel="noopener noreferrer">https://stackoverflow.com/questions/72278384/what-is-the-reason-for-getting-a-pip-error?noredirect=1&amp;lq=1</a></div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">これは関係ないですね</div>
+		<div class="content">今の入力は Python ですか？</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">&gt;&gt;&gt; です</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">じゃあ Ctrl + Z を押して、pip と打って下さい</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">なんかめっちゃ出た</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">じゃあできてますね</div>
+		<pre><code class="language-">python -m pip install discord
+</code></pre>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">discord と discord.py が両方ある</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">へー。discord.py を入れたら bot 作りに戻れます</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content"></div>
+		<div class="content"><a href="https://discordpy.readthedocs.io/ja/latest/discord.html" target="_blank" rel="noopener noreferrer">https://discordpy.readthedocs.io/ja/latest/discord.html</a></div>
+		<div class="content">Discord API を使うためにアカウントを作る必要がある、たしかに</div>
+		<div class="content">wild bot というのは Discord の単語チョイス？</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">そうです</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">コピーボタン、どれ？</div>
+		<div class="content">コピーする値が 0 なんですよね</div>
+		<div class="content">permission ってなに？英語が分からん</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer"><img alt="SY" class="icon" src="icons/SY.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer">SY</a></span>
+		<div class="content">認可？</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">bot に与える権限</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer"><img alt="SY" class="icon" src="icons/SY.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer">SY</a></span>
+		<div class="content">チェックすると、それができるような、いい感じの値が下に吐かれます</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">あ、そういうことなの</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer"><img alt="SY" class="icon" src="icons/SY.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer">SY</a></span>
+		<div class="content">それを押して下を見ると値が変わっている</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">2048 とかが出ていることから分かるように、権限のあるなしを 2 進数の桁に対応させてます</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">まあそれが一番簡単ですからねぇ</div>
+		<div class="content">メンションを飛ばすかどうかの権限がありそう</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer"><img alt="SY" class="icon" src="icons/SY.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer">SY</a></span>
+		<div class="content">administrator 権限</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">乗っ取られたら全てが終わるんよ</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">まあ mention everyone もつけておくか</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">mention の仕方、めんどくさかったはず</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer"><img alt="SY" class="icon" src="icons/SY.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/S_Y15" target="_blank" rel="noopener noreferrer">SY</a></span>
+		<div class="content">メンションに値がついてたはず</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer"><img alt="hsjoihs" class="icon" src="icons/hsjoihs.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/sosobotpi" target="_blank" rel="noopener noreferrer">hsjoihs</a></span>
+		<div class="content">とりあえず実験してみて、上手くいかなかったら手法を変えてもう一回すればよいわけです。わりとこの業界は『案ずるより産むが易し』で全てが回ってます</div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer"><img alt="MIT" class="icon" src="icons/MIT.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/mai_lang0" target="_blank" rel="noopener noreferrer">MIT</a></span>
+		<div class="content">自分で考えないと結果が返ってこない分野に慣れきっているのでその発想が出てこなかった</div>
+		<div class="content"><a href="https://dev.classmethod.jp/articles/discord-bot-by-discordpy/" target="_blank" rel="noopener noreferrer">https://dev.classmethod.jp/articles/discord-bot-by-discordpy/</a></div>
+	</div>
+</div>
+<div class="one_person">
+	<div><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer"><img alt="meloviliju" class="icon" src="icons/meloviliju.webp" height="48px"></a></div>
+	<div class="name_and_content">
+		<span class="name"><a href="https://twitter.com/shinji_jetter" target="_blank" rel="noopener noreferrer">meloviliju</a></span>
+		<div class="content">せっかくだから私も作るか</div>
+	</div>
+</div>
+</body>

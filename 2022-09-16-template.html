@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title>日本机戦連盟教育会ログ (2022年9月16日)</title>
+	$css
+	<link rel="stylesheet" href="vs.min.css">
+	<script src="highlight.min.js"></script>
+	<script>hljs.highlightAll();</script>
+</head>
+<body style="background-color: #eeeeee">
+<h1>日本机戦連盟教育会ログ (2022年9月16日)</h1>
+<p>編纂者：<a href="https://twitter.com/hsjoihs" target="_blank" rel="noopener noreferrer">hsjoihs</a></p>
+<p><a href="https://hsjoihs.hatenablog.com/entry/*****">はてなブログへのバックリンク</a></p>
+<h2>概要</h2>
+<p><a href="https://sites.google.com/view/cet2kaik" target="_blank" rel="noopener noreferrer">日本机戦連盟</a>の <a href="https://discord.gg/jYdxPSF">Discord サーバー</a>で2022年9月16日に発生した会話が有用そうなので、会話を一般公開する。会話のテキスト起こしも、Discord に最初からテキストとして書かれたものも、区別せずに表示している。</p>
+<h2>文脈補足</h2>
+<p>この会話がなされた経緯としては、</p>
+<ul>
+	<li>創作者の集まりなのである意味当然なのだが、創作をするだけして、その documentation が全く足りていない現状がある。documentation 自体が行われている場合でも、その解説文書自体がとっ散らかっており、興味を持ってくれた人に「ここから全部読めます」と提示できるリンクがない</li>
+	<li>その編纂作業をきちんと行うには、労働力を定期的に供与するような仕組み作りが不可欠である</li>
+	<li>また、主要メンバーが今後半年間忙しくなってくるという現状がある中で、あらゆる面で属人化してしまっている現状を改善していく必要がある</li>
+</ul>
+<p>というのがある。このとっ散らかり具合を体感するには、<a href="https://github.com/AIL-MO-LETI-CEP/issues/issues/">issue 一覧</a>を見ていただくのが手っ取り早いであろう。</p>
+
+<p>ということで、今回は、属人化低下の一環として、Discord bot の製作のための下調べを通して、フロントエンド・バックエンド・API・責務の分離などの重要な概念について教育していくという会が行われた。</p>
+<h2>用語補足</h2>
+<p>日本机戦連盟の Discord サーバーでなされた会話であるので、一部の用語が説明なしに用いられている。ここではそれを解説する。</p>
+<ul>
+	<li>ボードゲーム「机戦」
+		<ul>
+			<li>架空世界で遊ばれている（という設定の）、長い伝統を持つ（という設定の）ゲーム</li>
+			<li><a href="https://yasusho1020.hatenablog.com/entry/2021/12/06/080852">Alibaba.com 経由で製造を中国企業に依頼</a>し、<a href="https://cet2kaik.booth.pm/items/3634755">販売</a>もしている</li>
+			<li>90 秒で解説した動画がこちら:<br><iframe width="560" height="315" src="https://www.youtube.com/embed/l1oRqKTQ0s8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></li>
+		</ul>
+	</li>
+	<li>BGEngine
+		<ul>
+			<li>ボードゲームのテストセット制作とオンラインテストプレイを支援するウェブサービス</li>
+			<li>URL は <a href="https://bgengine.net/">https://bgengine.net/</a></li>
+			<li>オンラインで机戦のテストプレイをするのに重宝していた</li>
+		</ul>
+	</li>
+	<li>cerke_online
+		<ul>
+			<li>hsjoihs がほぼ独力で組んだ、机戦のオンライン対戦をするための Web ページ</li>
+			<li>URL は <a href="http://jurliyuuri.github.io/cerke_online_alpha">http://jurliyuuri.github.io/cerke_online_alpha</a></li>
+			<li>最近は、基本的に全ての UI を異世界文字だけで表示できるようにするなどの改修を行っている<br>
+				<blockquote class="twitter-tweet"><p lang="ja" dir="ltr">5 年以上掛けて創作してきた架空伝統ゲーム「机戦（セッカイク）」、ついにそれのオンライン対戦用の Web アプリ上で基本的に全ての UI を異世界文字だけで表示できるようになった。Web アプリ版はコロナ前から組んでたはずだから、もう 3 年弱とかになるのか。いやぁここまで長かったなぁ <a href="https://t.co/ui7pekPocJ">pic.twitter.com/ui7pekPocJ</a></p>&mdash; hsjoihs (はすじょい) @ 年度末まで低浮上 (@hsjoihs) <a href="https://twitter.com/hsjoihs/status/1553751219486609408?ref_src=twsrc%5Etfw">July 31, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+			</li>
+		</ul>
+	</li>
+	<li>投げ棒
+		<ul>
+			<li>机戦に存在する乱数要素</li>
+			<li>詳しくは<a href="https://sites.google.com/view/cet2kaik/%E7%B5%B1%E4%B8%80%E8%A6%8F%E5%89%87/%E9%81%8A%E6%88%AF%E3%81%AE%E9%81%93%E5%85%B7?authuser=0#h.p_hS3zUqTfh6rv">公式サイト</a>を参照のこと</li>
+		</ul>
+	</li>
+	<li>『LE から LI を踏んで LU へ行け』
+		<ul>
+			<li>LE, LI, LU はマス目の名前。それぞれ、将棋でいう「８二」「８三」「８四」に対応。詳しくは<a href="https://sites.google.com/view/cet2kaik/%E7%B5%B1%E4%B8%80%E8%A6%8F%E5%89%87/%E6%A3%8B%E8%AD%9C%E8%A1%A8%E8%A8%98#h.sik5guriyy35">公式サイト</a>を参照のこと</li>
+			<li>「踏む」というのは、机戦最大の特徴。詳しくは上述の動画を参照のこと</li>
+			<li><a href="https://sites.google.com/view/cet2kaik/%E7%B5%B1%E4%B8%80%E8%A6%8F%E5%89%87/%E6%88%A6%E8%A1%93%E7%A0%94%E7%A9%B6#h.p_KAPUEdp98Tfw">日本机戦連盟 - 戦術研究</a>にもあるように、LE から LI を踏んで LU へ行くというのは、机戦において非常に典型的なオープニングであり、将棋における☗️２六歩と似た地位を占めている</li>
+		</ul>
+	</li>
+</ul>
+<h2>会話ログ本体</h2>$content</body>
